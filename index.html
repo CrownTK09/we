@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Perfiles</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Encabezado -->
+    <header>
+        <div class="header-container">
+            <button id="btn-login" class="header-btn">Iniciar sesión</button>
+            <button id="btn-register" class="header-btn">Registrar</button>
+            <button id="btn-discord" class="header-btn" onclick="window.open('https://discord.com', '_blank')">Discord</button>
+        </div>
+    </header>
+
+    <!-- Mensaje antes de iniciar sesión -->
+    <div id="login-message">
+        <p>Para crear un perfil, inicia sesión o regístrate.</p>
+    </div>
+
+    <!-- Popups -->
+    <!-- Registro Popup -->
+    <div id="register-popup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup('register-popup')">&times;</span>
+            <h3>Registrar Cuenta</h3>
+            <input type="text" id="register-username" placeholder="Nombre de usuario">
+            <input type="password" id="register-password" placeholder="Contraseña">
+            <button id="register-btn">Registrar</button>
+        </div>
+    </div>
+
+    <!-- Crear Perfil Popup -->
+    <div id="create-profile-popup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup('create-profile-popup')">&times;</span>
+            <h3>Crear Perfil</h3>
+            <input type="file" id="profile-photo" accept="image/*">
+            <input type="text" id="profile-name" placeholder="Nombre de usuario">
+            <input type="text" id="discord-name" placeholder="Nombre de Discord">
+            <button id="create-profile-btn">Crear Perfil</button>
+            <button id="preview-profile-btn">Previsualizar</button>
+        </div>
+    </div>
+
+    <!-- Popup de Discord -->
+    <div id="discord-popup" class="popup">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closePopup('discord-popup')">&times;</span>
+            <p id="discord-name-display"></p>
+            <button id="copy-discord-btn">Copiar</button>
+        </div>
+    </div>
+
+    <!-- Contenedor de Perfiles -->
+    <div id="profiles-container"></div>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>&copy; 2024 TK. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
