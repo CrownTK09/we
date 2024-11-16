@@ -2,6 +2,17 @@ let currentUser = null;
 let profiles = JSON.parse(localStorage.getItem("perfiles.json")) || [];
 let accounts = JSON.parse(localStorage.getItem("cuentas.json")) || [];
 
+// Mostrar mensaje dinámico
+function updateMessage() {
+    const message = document.getElementById("login-message");
+    if (currentUser) {
+        message.innerHTML = `<p>Para crear un perfil, pulsa el botón 'Crear Perfil'.</p>`;
+    } else {
+        message.innerHTML = `<p>Para crear un perfil, inicia sesión o regístrate.</p>`;
+    }
+}
+
+// Mostrar perfiles
 function showProfiles() {
     const profilesContainer = document.getElementById("profiles-container");
     profilesContainer.innerHTML = "";
@@ -13,92 +24,45 @@ function showProfiles() {
         profileImage.src = profile.photo || "default.jpg";
         profileImage.className = "profile-photo";
 
-        const profileName = document.createElement("p");
-        profileName.textContent = `Usuario: ${profile.username}`;
+        const profileName = document.createElement("h4");
+        profileName.textContent = profile.name;
 
-        const discordButton = document.createElement("button");
-        discordButton.textContent = "Discord";
-        discordButton.onclick = () => {
-            openPopup("discord-popup");
-            document.getElementById("discord-name-display").textContent =
-                profile.discordName;
-        };
+        const discordName = document.createElement("p");
+        discordName.textContent = profile.discord;
 
         profileCard.appendChild(profileImage);
         profileCard.appendChild(profileName);
-        profileCard.appendChild(discordButton);
+        profileCard.appendChild(discordName);
 
         profilesContainer.appendChild(profileCard);
     });
 }
 
-function register() {
+// Registrar usuario
+document.getElementById("register-btn").addEventListener("click", () => {
     const username = document.getElementById("register-username").value;
     const password = document.getElementById("register-password").value;
 
     if (username && password) {
         accounts.push({ username, password });
         localStorage.setItem("cuentas.json", JSON.stringify(accounts));
-        alert("Cuenta registrada con éxito");
-        currentUser = { username };
+        currentUser = username;
         closePopup("register-popup");
-        toggleLoginState();
-    } else {
-        alert("Por favor, completa todos los campos.");
-    }
-}
-
-function toggleLoginState() {
-    document.getElementById("btn-login").style.display = "none";
-    document.getElementById("btn-register").style.display = "none";
-
-    const createProfileBtn = document.createElement("button");
-    createProfileBtn.textContent = "Crear Perfil";
-    createProfileBtn.className = "header-btn";
-    createProfileBtn.onclick = () => openPopup("create-profile-popup");
-
-    document.querySelector(".header-container").appendChild(createProfileBtn);
-
-    document.getElementById("login-message").textContent =
-        "Para crear un perfil, pulsa en el botón 'Crear Perfil'.";
-}
-
-function createProfile() {
-    const photo = document.getElementById("profile-photo").files[0];
-    const username = document.getElementById("profile-name").value;
-    const discordName = document.getElementById("discord-name").value;
-
-    if (username && discordName) {
-        const profile = {
-            photo: photo ? URL.createObjectURL(photo) : "default.jpg",
-            username,
-            discordName,
-        };
-        profiles.push(profile);
-        localStorage.setItem("perfiles.json", JSON.stringify(profiles));
-        alert("Perfil creado con éxito");
-        closePopup("create-profile-popup");
+        updateMessage();
         showProfiles();
-    } else {
-        alert("Por favor, completa todos los campos.");
     }
-}
+});
 
-function openPopup(popupId) {
-    document.getElementById(popupId).style.display = "flex";
-}
-
+// Cerrar popup
 function closePopup(popupId) {
     document.getElementById(popupId).style.display = "none";
 }
 
-document.getElementById("register-btn").onclick = register;
-document.getElementById("create-profile-btn").onclick = createProfile;
-document.getElementById("copy-discord-btn").onclick = () => {
-    const discordName = document.getElementById("discord-name-display").textContent;
-    navigator.clipboard.writeText(discordName);
-    alert("¡Nombre de Discord copiado!");
-};
+// Abrir popup
+function openPopup(popupId) {
+    document.getElementById(popupId).style.display = "flex";
+}
 
-// Inicializar
+// Inicialización
+updateMessage();
 showProfiles();
